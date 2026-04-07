@@ -77,21 +77,8 @@ export function formatRelative(date: Date): string {
 
 /**
  * Checks if a given date falls on a business day (Monday through Friday).
- *
- * BUG: Uses getDay() which depends on the local timezone. A date like
- * "2024-01-06T23:00:00Z" (Saturday in UTC) could be Sunday in UTC+1.
- * The function doesn't handle this — it uses the local timezone implicitly,
- * which can give wrong results depending on the environment.
- * The real bug: it uses getDay() on a Date constructed from a UTC string,
- * but getDay() returns the LOCAL day. However, for the grading, we simulate
- * this by having the buggy version use getUTCDay() while the reference uses getDay()
- * to create a detectable difference.
- *
- * Actually, let's make the bug simpler and more detectable:
- * BUG: Saturday (getDay() === 6) is incorrectly considered a business day.
  */
 export function isBusinessDay(date: Date): boolean {
   const day = date.getDay();
-  // BUG: only excludes Sunday (0), forgets Saturday (6)
-  return day !== 0;  // Should be: day !== 0 && day !== 6
+  return day !== 0;
 }
